@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>For My Wabby ❤️</title>
+<style>
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    color: #5a3044;
+    background:
+      radial-gradient(circle at 10% 10%, #fff 0 5%, transparent 20%),
+      linear-gradient(135deg, #ffe8f0, #fff4e8 48%, #fbe4ff);
+    overflow-x: hidden;
+  }
+  button { font: inherit; }
+  .floating {
+    position: fixed; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
+  }
+  .heart {
+    position: absolute; bottom: -40px; opacity: .45;
+    animation: floatUp linear infinite;
+    font-size: 22px;
+  }
+  @keyframes floatUp {
+    to { transform: translateY(-110vh) rotate(25deg); opacity: 0; }
+  }
+  main { position: relative; z-index: 1; }
+  section {
+    min-height: 100vh;
+    padding: 70px 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .card {
+    width: min(900px, 100%);
+    background: rgba(255,255,255,.84);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,.8);
+    border-radius: 30px;
+    padding: clamp(25px, 5vw, 55px);
+    box-shadow: 0 18px 60px rgba(122, 57, 91, .14);
+    text-align: center;
+  }
+  .eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: .78rem;
+    font-weight: 700;
+    color: #c35d88;
+  }
+  h1 {
+    margin: 10px 0;
+    font-size: clamp(2.7rem, 9vw, 6rem);
+    line-height: .95;
+    color: #b84376;
+  }
+  h2 {
+    font-size: clamp(2rem, 6vw, 3.5rem);
+    margin: 8px 0 20px;
+    color: #a83f6d;
+  }
+  h3 { color: #b34c78; }
+  p { line-height: 1.8; font-size: 1.04rem; }
+  .subtitle { font-size: 1.15rem; max-width: 650px; margin: 15px auto 28px; }
+  .btn {
+    border: 0; border-radius: 999px; padding: 14px 24px;
+    background: #d85d8d; color: white; font-weight: 700;
+    cursor: pointer; box-shadow: 0 8px 20px rgba(216,93,141,.25);
+    transition: transform .2s, box-shadow .2s;
+    margin: 6px;
+  }
+  .btn:hover { transform: translateY(-3px) scale(1.02); box-shadow: 0 12px 25px rgba(216,93,141,.32); }
+  .btn.secondary { background: #fff; color: #b84376; border: 2px solid #f2b7cc; }
+  .scroll { margin-top: 35px; font-size: .9rem; opacity: .7; }
+  .letter { text-align: left; }
+  .letter p { margin: 0 0 17px; }
+  .divider { height: 1px; background: #f0cad8; margin: 28px 0; }
+  .highlight {
+    background: #fff0f5; border-radius: 20px; padding: 18px 20px;
+    margin: 20px 0; border-left: 5px solid #db6793;
+  }
+  .date-box {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    gap: 12px; margin: 25px 0;
+  }
+  .date-item {
+    background: #fff4f8; border-radius: 18px; padding: 17px 10px;
+  }
+  .date-item strong { display: block; color: #b84376; font-size: 1.05rem; }
+  .date-item span { font-size: .88rem; }
+  .warning {
+    background: #fff7d9; border: 2px dashed #e8b94c;
+    padding: 18px; border-radius: 18px; font-weight: 700;
+  }
+  .gift-box {
+    width: 170px; height: 135px; margin: 30px auto 20px;
+    position: relative; cursor: pointer;
+    animation: wiggle 2.4s ease-in-out infinite;
+  }
+  .box-body {
+    position: absolute; left: 10px; right: 10px; bottom: 0; height: 100px;
+    background: #f4a8c5; border-radius: 8px 8px 15px 15px;
+    box-shadow: 0 12px 25px rgba(150,70,100,.2);
+  }
+  .box-lid {
+    position: absolute; left: 0; right: 0; top: 15px; height: 35px;
+    background: #ef8fb5; border-radius: 10px; z-index: 2;
+  }
+  .ribbon-v {
+    position: absolute; top: 15px; bottom: 0; width: 22px; left: 74px;
+    background: #fff1f5; z-index: 3;
+  }
+  .bow {
+    position: absolute; top: -8px; left: 57px; z-index: 4;
+    font-size: 45px; transform: rotate(-8deg);
+  }
+  @keyframes wiggle {
+    0%,100% { transform: rotate(0); }
+    50% { transform: rotate(3deg) translateY(-4px); }
+  }
+  .clues { text-align: left; max-width: 600px; margin: 20px auto; }
+  .clue {
+    display: flex; gap: 14px; align-items: flex-start;
+    background: #fff7fa; border-radius: 18px; padding: 15px;
+    margin: 10px 0; transition: transform .2s;
+  }
+  .clue:hover { transform: translateX(5px); }
+  .clue .num {
+    min-width: 34px; height: 34px; border-radius: 50%;
+    display: grid; place-items: center; background: #e57ba5; color: white; font-weight: 800;
+  }
+  .guess {
+    display: none; margin-top: 20px; padding: 16px;
+    background: #fdf0ff; border-radius: 18px;
+  }
+  .countdown {
+    display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 25px 0;
+  }
+  .time {
+    min-width: 76px; padding: 12px 8px; border-radius: 16px;
+    background: #fff0f6;
+  }
+  .time b { display:block; font-size: 1.55rem; color:#b84376; }
+  .time small { opacity:.7; }
+  footer { text-align:center; padding: 25px; opacity:.65; }
+  #confetti { position: fixed; inset: 0; pointer-events: none; z-index: 20; }
+  .secret { font-size: .85rem; opacity: .65; margin-top: 25px; }
+  @media (max-width: 600px) {
+    section { padding: 35px 12px; min-height: 100svh; }
+    .card { border-radius: 23px; padding: 25px 19px; }
+    p { font-size: .98rem; line-height: 1.7; }
+    .date-box { grid-template-columns: 1fr; }
+    .btn { width: 100%; margin: 5px 0; }
+    .letter { text-align: left; }
+  }
+</style>
+</head>
+<body>
+<canvas id="confetti"></canvas>
+<div class="floating" id="floating"></div>
+
+<main>
+<section id="home">
+  <div class="card">
+    <div class="eyebrow">A little something for you</div>
+    <h1>Happy Birthday,<br>My Wabby! ❤️</h1>
+    <p class="subtitle">
+      I made this little corner of the internet just for you.
+      No pressure... but you are legally required to smile at least once. 😌
+    </p>
+    <button class="btn" onclick="celebrate()">🎉 Press this first!</button>
+    <button class="btn secondary" onclick="document.getElementById('letter').scrollIntoView()">💌 I want the letter</button>
+    <div class="scroll">↓ There is more waiting for you ↓</div>
+  </div>
+</section>
+
+<section id="letter">
+  <div class="card letter">
+    <div class="eyebrow">From your favorite person</div>
+    <h2>For My Wabby ❤️</h2>
+
+    <p>Hello, my Wabby. ❤️</p>
+
+    <p>I made this website especially for you, and I hope you like it. I want you to know how much I appreciate you. The more I learn about you every single day, the more I also learn about myself. You are one of the best gifts I have ever received in my entire life, and I never want to lose you.</p>
+
+    <p>Wabby, I know that lately has been hard for both of us. I remember when we were still in second year and we used to talk about our third year. We talked about how busy we would become, how little time we might have for each other, and what would happen to us. Now, all those conversations from before make sense. Now that we are actually experiencing it, I understand them more.</p>
+
+    <p>This time, my love, I want to do better. I will do my very best to understand you, be more patient, and give you the love and care you deserve.</p>
+
+    <p>You are someone I never want to lose. You are someone I want to spoil, take care of, grow with, and spend the rest of my life with.</p>
+
+    <p>I also know that I have hurt you before. I told you about the things I didn't like, and sometimes I made you feel bad about yourself. I'm truly sorry, my love. I will be more careful with my words and actions, and I will be softer and more understanding with you.</p>
+
+    <p>I never want to disappoint my Baby Wabby. I want to do my best to build the life we have always dreamed of together.</p>
+
+    <p>Thank you for staying with me this far, my love. Konting kembot na lang, graduate na tayo. ❤️ And after that, we can finally start building our life together.</p>
+
+    <p><strong>I love you forever, my love. ❤️</strong></p>
+
+    <div class="divider"></div>
+
+    <p><strong>Advance happy birthday, my Wabby. 🎂❤️</strong></p>
+
+    <div style="text-align:center">
+      <button class="btn" onclick="celebrate()">❤️ Send Wabby Some Love</button>
+      <button class="btn secondary" onclick="document.getElementById('date').scrollIntoView()">👀 Wait... there's another part?</button>
+    </div>
+  </div>
+</section>
+
+<section id="date">
+  <div class="card">
+    <div class="eyebrow">IMPORTANT! PLEASE READ! 🚨</div>
+    <h2>A Little Birthday Date 💕</h2>
+
+    <div class="highlight">
+      <strong>If you reached this far, please take note of this.</strong><br>
+      This note is VERY important to read! 👀
+    </div>
+
+    <p>
+      On <strong>September 18, 2026</strong>, after our half-day duty at the Cashier's Office,
+      <strong>12 PM onwards</strong>, I want to invite you to eat with me at
+      <strong>Romantic Baboy – Checkpoint, Pasiano Road</strong>,
+      on the second floor, beside Starbucks. 🐷❤️
+    </p>
+
+    <p>
+      This is our advance celebration for your birthday. I planned it this way because
+      your birthday week is basically attacking us with schedules. 😭
+    </p>
+
+    <div class="date-box">
+      <div class="date-item"><strong>Sept. 19</strong><span>MedTech Night/Day 🧪</span></div>
+      <div class="date-item"><strong>Sept. 21</strong><span>Full schedule of classes 📚</span></div>
+      <div class="date-item"><strong>Sept. 22</strong><span>Full day of classes 😭</span></div>
+    </div>
+
+    <p>
+      Because of these schedules, celebrating on those dates would be difficult.
+      So... let's steal a little time for ourselves before everything gets crazy again. 🥹❤️
+    </p>
+
+    <div class="warning">
+      📌 DATE: SEPTEMBER 18, 2026<br>
+      🕛 TIME: 12 PM ONWARDS<br>
+      📍 ROMANTIC BABOY – CHECKPOINT, PASIANO ROAD<br>
+      <small>(2nd floor, beside Starbucks)</small>
+    </div>
+
+    <p style="margin-top:25px;">So... Wabby, will you go on a little birthday date with me? 🥺</p>
+    <button class="btn" onclick="yesDate()">YES, OF COURSE! ❤️</button>
+    <button class="btn secondary" onclick="maybeDate()">Hmm... let me think 🤨</button>
+    <div id="dateReply"></div>
+
+    <div class="divider"></div>
+    <button class="btn secondary" onclick="document.getElementById('gift').scrollIntoView()">🎁 I see another mystery...</button>
+  </div>
+</section>
+
+<section id="gift">
+  <div class="card">
+    <div class="eyebrow">TOP SECRET 🤫</div>
+    <h2>One Last Surprise 🎁</h2>
+    <p>
+      Okay, Wabby... there is one more thing.
+      I prepared a little surprise gift for you.
+    </p>
+    <p><strong>But I'm not telling you what it is. 😌</strong></p>
+
+    <div class="gift-box" onclick="openGift()">
+      <div class="bow">🎀</div>
+      <div class="box-lid"></div>
+      <div class="box-body"></div>
+      <div class="ribbon-v"></div>
+    </div>
+
+    <p><strong>Click the gift box for your clues.</strong> 👀</p>
+
+    <div class="clues">
+      <div class="clue"><div class="num">1</div><div>It's something you can <strong>wear</strong>. 👗</div></div>
+      <div class="clue"><div class="num">2</div><div>It's meant to keep you <strong>cozy and warm</strong>. ☁️</div></div>
+      <div class="clue"><div class="num">3</div><div>It is <strong>soft and fluffy</strong>. You might want to hug yourself while wearing it. 😂</div></div>
+      <div class="clue"><div class="num">4</div><div>There is a very specific <strong>color</strong> involved... and I think you'll like it. 🎀</div></div>
+      <div class="clue"><div class="num">5</div><div>It might make you look like a cute little <strong>cloud</strong>. ☁️😂</div></div>
+    </div>
+
+    <button class="btn" onclick="showGuess()">🤔 I think I know what it is!</button>
+    <div class="guess" id="guess">
+      You can guess as many times as you want... but I'm not confirming anything. 😌
+      <br><br><strong>You'll have to wait for the exact birthday date to find out. 🎁❤️</strong>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3>🔒 Birthday-Day Unlock</h3>
+    <p>
+      This surprise can only be claimed on your <strong>exact birthday date</strong>.
+      Nice try, Wabby. 😌 You cannot speedrun the surprise.
+    </p>
+
+    <div class="countdown" id="countdown">
+      <div class="time"><b id="days">--</b><small>days</small></div>
+      <div class="time"><b id="hours">--</b><small>hours</small></div>
+      <div class="time"><b id="mins">--</b><small>minutes</small></div>
+      <div class="time"><b id="secs">--</b><small>seconds</small></div>
+    </div>
+
+    <button class="btn" onclick="birthdayCheck()">🎂 Try to Claim It</button>
+    <div id="claimMessage"></div>
+
+    <p class="secret">P.S. I love you, Wabby. More than this website can explain. ❤️</p>
+  </div>
+</section>
+</main>
+
+<footer>Made with love, effort, and probably too much JavaScript. ❤️</footer>
+
+<script>
+/* Floating hearts */
+const floating = document.getElementById("floating");
+for (let i = 0; i < 18; i++) {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.textContent = ["❤️","💕","💗","💖","✨"][Math.floor(Math.random()*5)];
+  h.style.left = Math.random()*100 + "%";
+  h.style.animationDuration = (8 + Math.random()*10) + "s";
+  h.style.animationDelay = (-Math.random()*15) + "s";
+  h.style.fontSize = (14 + Math.random()*20) + "px";
+  floating.appendChild(h);
+}
+
+/* Confetti */
+const canvas = document.getElementById("confetti");
+const ctx = canvas.getContext("2d");
+let pieces = [];
+function resizeCanvas() {
+  canvas.width = innerWidth * devicePixelRatio;
+  canvas.height = innerHeight * devicePixelRatio;
+  ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+}
+addEventListener("resize", resizeCanvas);
+resizeCanvas();
+
+function celebrate() {
+  for (let i=0;i<180;i++) {
+    pieces.push({
+      x: innerWidth/2, y: innerHeight*.35,
+      vx: (Math.random()-.5)*14,
+      vy: Math.random()*-12-3,
+      size: Math.random()*8+4,
+      rot: Math.random()*Math.PI,
+      vr: (Math.random()-.5)*.25,
+      life: 1,
+      emoji: Math.random() > .75 ? "❤️" : null
+    });
+  }
+}
+function animateConfetti() {
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  pieces = pieces.filter(p => p.life > 0);
+  for (const p of pieces) {
+    p.x += p.vx; p.y += p.vy; p.vy += .25; p.rot += p.vr; p.life -= .006;
+    ctx.save();
+    ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+    if (p.emoji) {
+      ctx.font = p.size*2 + "px serif"; ctx.fillText(p.emoji,0,0);
+    } else {
+      ctx.fillStyle = ["#ef6f9e","#f5b642","#9e7bea","#68b6d9","#78c78b"][Math.floor(Math.random()*5)];
+      ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size*1.5);
+    }
+    ctx.restore();
+  }
+  requestAnimationFrame(animateConfetti);
+}
+animateConfetti();
+
+function yesDate() {
+  celebrate();
+  document.getElementById("dateReply").innerHTML =
+    '<div class="highlight"><strong>YAY! ❤️</strong><br>Okay, it\'s officially a date. I\'ll see you there, Wabby. 🥹</div>';
+}
+function maybeDate() {
+  document.getElementById("dateReply").innerHTML =
+    '<div class="highlight">Take your time... but I\'m watching you. 👁️👄👁️<br><br><strong>Just kidding. 😂❤️</strong></div>';
+}
+function openGift() {
+  celebrate();
+  document.getElementById("gift").querySelector("h2").textContent = "Okay... CLUES! 👀";
+}
+function showGuess() {
+  document.getElementById("guess").style.display = "block";
+  celebrate();
+}
+
+/* Birthday is set to September 20, 2026.
+   The surprise becomes claimable only on that calendar date. */
+function birthdayCheck() {
+  const now = new Date();
+  const isBirthday = now.getFullYear() === 2026 && now.getMonth() === 8 && now.getDate() === 20;
+  const msg = document.getElementById("claimMessage");
+  if (isBirthday) {
+    celebrate();
+    msg.innerHTML = '<div class="highlight"><strong>🎉 IT\'S YOUR BIRTHDAY! 🎉</strong><br>Okay, Wabby... the mystery gift is officially yours. ❤️🎁<br><br>Come claim it from me!</div>';
+  } else {
+    msg.innerHTML = '<div class="highlight">🚫 Nice try, Wabby. 😂<br>The surprise is locked until your exact birthday date.<br><br><strong>Patience, Baby Wabby. ❤️</strong></div>';
+  }
+}
+
+/* Countdown to Sept 20, 2026, local browser time */
+function updateCountdown() {
+  const target = new Date(2026, 8, 20, 0, 0, 0);
+  const now = new Date();
+  let diff = target - now;
+  if (diff < 0) diff = 0;
+  const s = Math.floor(diff/1000);
+  document.getElementById("days").textContent = Math.floor(s/86400);
+  document.getElementById("hours").textContent = Math.floor(s%86400/3600);
+  document.getElementById("mins").textContent = Math.floor(s%3600/60);
+  document.getElementById("secs").textContent = s%60;
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+</script>
+</body>
+</html>
